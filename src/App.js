@@ -12,28 +12,25 @@ import Butterflies from './components/butterflies/Butterflies';
 import Sunflowers from './components/sunflowers/Sunflowers';
 import BirthdaySurprise from './components/surprise/BirthdaySurprise';
 import MusicPlayer from './components/music/MusicPlayer';
+import BalloonSmash from './components/balloon/BalloonSmash';
+import SpinWheel from './components/spinwheel/SpinWheel';
 
 function App() {
   const [isloading, setIsLoading] = useState(true);
-  const [isFullscreen, setIsFullscreen] = useState(
-    Boolean(document.fullscreenElement)
-  );
+  const [isFullscreen, setIsFullscreen] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(false);
 
   const finishLoading = useCallback(() => {
     setIsLoading(false);
   }, []);
 
-  // Keep the fullscreen button label in sync with browser state.
+  // Keep fullscreen state in sync with the browser.
   useEffect(() => {
     const handleFullscreenChange = () => {
       setIsFullscreen(Boolean(document.fullscreenElement));
     };
 
-    document.addEventListener(
-      'fullscreenchange',
-      handleFullscreenChange
-    );
+    document.addEventListener('fullscreenchange', handleFullscreenChange);
 
     return () => {
       document.removeEventListener(
@@ -43,6 +40,7 @@ function App() {
     };
   }, []);
 
+  // Toggle browser fullscreen.
   const toggleFullscreen = async () => {
     try {
       if (!document.fullscreenElement) {
@@ -55,6 +53,7 @@ function App() {
     }
   };
 
+  // Toggle the website theme.
   const toggleDarkMode = () => {
     setIsDarkMode((previousMode) => !previousMode);
   };
@@ -86,7 +85,6 @@ function App() {
           <a href="#food-games">Play our games 🎮</a>
         </div>
 
-        {/* Theme button on the left, fullscreen on the right */}
         <div className="navbar-actions">
           <button
             type="button"
@@ -107,26 +105,30 @@ function App() {
             className="fullscreen-button"
             onClick={toggleFullscreen}
           >
-            {isFullscreen
-              ? 'Exit Fullscreen'
-              : 'Fullscreen ⛶'}
+            {isFullscreen ? 'Exit Fullscreen' : 'Fullscreen ⛶'}
           </button>
         </div>
       </nav>
 
-      {/* Website sections */}
-      <Hero />
-      <FoodAdventures />
-      <Memories />
-      <BirthdaySurprise/>
-      <FoodGames />
-      <MusicPlayer/>
+      {/* Main website sections */}
+      <main>
+        <Hero />
+        <FoodAdventures />
+        <Memories />
+        <BirthdaySurprise />
+        <SpinWheel/>
+        <FoodGames />
+        <MusicPlayer />
+      </main>
 
       {/* Footer */}
       <footer className="footer">
         <p>Made with 💛, memories, and a little bit of code.</p>
         <p>For someone who makes life brighter. ♡</p>
       </footer>
+
+      {/* Balloon surprise — render only once */}
+      <BalloonSmash />
     </div>
   );
 }

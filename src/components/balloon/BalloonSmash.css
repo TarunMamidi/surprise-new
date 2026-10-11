@@ -1,0 +1,451 @@
+
+/* ================================
+   FLOATING BALLOON ICON
+================================ */
+
+.balloon-launcher {
+  position: fixed;
+  right: 22px;
+  bottom: 65px;
+  z-index: 999;
+
+  width: 56px;
+  height: 56px;
+  padding: 0;
+
+  display: grid;
+  place-items: center;
+
+  border: 2px solid #fff4c9;
+  border-radius: 50%;
+  background: linear-gradient(145deg, #fff2a9, #f5cd58);
+  box-shadow: 0 5px 20px rgba(140, 100, 30, 0.25);
+
+  font-size: 28px;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+
+  animation: launcher-float 2.5s ease-in-out infinite;
+}
+
+.balloon-launcher-sparkle {
+  position: absolute;
+  top: 1px;
+  right: 2px;
+  color: #b77b13;
+  font-size: 13px;
+}
+
+@keyframes launcher-float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+/* ================================
+   FULLSCREEN OVERLAY
+   Exists only when the surprise opens
+================================ */
+
+.balloon-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 100%;
+  height: 100vh;
+  height: 100dvh;
+  box-sizing: border-box;
+
+  padding: 55px 14px 14px;
+  overflow: hidden;
+  overscroll-behavior: none;
+  touch-action: none;
+
+  background: rgba(35, 26, 18, 0.78);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+
+  animation: balloon-overlay-in 0.25s ease-out;
+}
+
+@keyframes balloon-overlay-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* ================================
+   CLOSE BUTTON
+================================ */
+
+.balloon-close {
+  position: fixed;
+  top: 12px;
+  right: 15px;
+  z-index: 10002;
+
+  width: 42px;
+  height: 42px;
+
+  display: grid;
+  place-items: center;
+
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.18);
+  color: white;
+
+  font-size: 28px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+/* ================================
+   SURPRISE CARD
+================================ */
+
+.balloon-scene {
+  position: relative;
+  flex: 0 1 auto;
+
+  width: min(100%, 420px);
+  max-height: calc(100dvh - 82px);
+  box-sizing: border-box;
+
+  padding: 20px 18px;
+  overflow: hidden;
+  overscroll-behavior: none;
+
+  border: 1px solid rgba(255, 224, 142, 0.8);
+  border-radius: 26px;
+
+  background: linear-gradient(160deg, #fffdf2, #fff0b9);
+  box-shadow: 0 20px 70px rgba(0, 0, 0, 0.25);
+
+  text-align: center;
+  color: #65461c;
+
+  animation: balloon-card-in 0.35s ease-out;
+}
+
+@keyframes balloon-card-in {
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.balloon-decorations {
+  margin-bottom: 8px;
+  font-size: 23px;
+}
+
+.balloon-eyebrow {
+  margin: 0 0 8px;
+  color: #a87522;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1.8px;
+}
+
+.balloon-heading {
+  margin: 0;
+  color: #70451a;
+  font-size: clamp(26px, 6vw, 36px);
+}
+
+.balloon-instruction {
+  max-width: 280px;
+  margin: 10px auto 8px;
+  color: #856b47;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+/* ================================
+   BALLOON TO POP
+================================ */
+
+.birthday-balloon {
+  display: block;
+  margin: 0 auto;
+  padding: 0;
+
+  border: 0;
+  background: transparent;
+
+  font-size: clamp(85px, 22vw, 125px);
+  line-height: 1.15;
+  cursor: pointer;
+
+  filter: drop-shadow(0 8px 7px rgba(119, 68, 68, 0.18));
+  animation: birthday-balloon-bob 1.5s ease-in-out infinite;
+  -webkit-tap-highlight-color: transparent;
+}
+
+@keyframes birthday-balloon-bob {
+  0%, 100% {
+    transform: translateY(0) rotate(-4deg);
+  }
+  50% {
+    transform: translateY(-8px) rotate(4deg);
+  }
+}
+
+.birthday-balloon:active {
+  transform: scale(0.88);
+}
+
+.balloon-tap-hint {
+  margin: 8px 0 0;
+  color: #a87522;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 2px;
+}
+
+/* ================================
+   BIRTHDAY REVEAL
+================================ */
+
+.balloon-result {
+  position: relative;
+  overflow: hidden;
+  padding: 4px 0;
+}
+
+.popped-icon {
+  margin-bottom: 6px;
+  font-size: 35px;
+  animation: popped-bounce 0.6s ease-out;
+}
+
+@keyframes popped-bounce {
+  0% { transform: scale(0.3); }
+  70% { transform: scale(1.15); }
+  100% { transform: scale(1); }
+}
+
+.birthday-message {
+  margin: 8px 0;
+  color: #d99a24;
+  font-size: clamp(42px, 10vw, 60px);
+  font-weight: 900;
+  line-height: 0.98;
+  letter-spacing: -1.5px;
+  text-shadow: 2px 3px 0 #ffe6a0;
+}
+
+.birthday-message span {
+  color: #8c5522;
+}
+
+.birthday-wish {
+  max-width: 300px;
+  margin: 12px auto;
+  color: #755b3a;
+  font-size: 13px;
+  line-height: 1.65;
+}
+
+.birthday-signature {
+  margin: 12px 0;
+  color: #a87522;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.5;
+}
+
+/* ================================
+   CONFETTI
+================================ */
+
+.balloon-confetti {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.balloon-confetti span {
+  position: absolute;
+  top: 48%;
+  left: 50%;
+
+  font-size: 16px;
+  opacity: 0;
+
+  animation: confetti-burst 1.5s ease-out
+    calc(var(--i) * 0.025s) both;
+}
+
+@keyframes confetti-burst {
+  0% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(0.5);
+  }
+  100% {
+    opacity: 0;
+    transform:
+      translate(
+        calc(-50% + cos(var(--angle)) * 110px),
+        calc(-50% + sin(var(--angle)) * 110px)
+      )
+      rotate(180deg)
+      scale(1.1);
+  }
+}
+
+/* ================================
+   BUTTONS
+================================ */
+
+.balloon-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.balloon-replay,
+.balloon-done {
+  display: block;
+  width: 100%;
+  max-width: 250px;
+  box-sizing: border-box;
+
+  margin: 0;
+  padding: 11px 16px;
+
+  border-radius: 28px;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 750;
+  cursor: pointer;
+
+  -webkit-tap-highlight-color: transparent;
+}
+
+.balloon-replay {
+  border: 0;
+  background: #eab849;
+  color: #573914;
+  box-shadow: 0 4px 12px rgba(181, 125, 26, 0.2);
+}
+
+.balloon-done {
+  border: 1px solid #e6cf9a;
+  background: #fffaf0;
+  color: #795c34;
+}
+
+/* ================================
+   SMALL PHONES
+================================ */
+
+@media (max-width: 480px) {
+  .balloon-launcher {
+    right: 16px;
+    bottom: 65px;
+    width: 52px;
+    height: 52px;
+    font-size: 25px;
+  }
+
+  .balloon-overlay {
+    padding: 52px 10px 10px;
+  }
+
+  .balloon-scene {
+    width: 100%;
+    max-height: calc(100dvh - 70px);
+    padding: 16px 14px;
+    border-radius: 22px;
+  }
+
+  .balloon-heading {
+    font-size: 28px;
+  }
+
+  .birthday-balloon {
+    font-size: 92px;
+  }
+
+  .birthday-message {
+    font-size: 46px;
+  }
+
+  .birthday-wish {
+    margin: 9px auto;
+    font-size: 12px;
+  }
+
+  .birthday-signature {
+    margin: 9px 0;
+  }
+}
+
+/* Short phone screens */
+@media (max-height: 650px) {
+  .balloon-scene {
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
+
+  .balloon-decorations {
+    margin-bottom: 4px;
+    font-size: 18px;
+  }
+
+  .balloon-instruction {
+    margin: 6px auto;
+  }
+
+  .birthday-balloon {
+    font-size: 72px;
+  }
+
+  .popped-icon {
+    font-size: 26px;
+    margin-bottom: 4px;
+  }
+
+  .birthday-message {
+    font-size: 40px;
+    margin: 5px 0;
+  }
+
+  .birthday-wish,
+  .birthday-signature {
+    margin: 7px auto;
+    line-height: 1.4;
+  }
+
+  .balloon-replay,
+  .balloon-done {
+    padding: 9px 14px;
+  }
+}
+
+/* Respect reduced-motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  .balloon-launcher,
+  .birthday-balloon,
+  .balloon-overlay,
+  .balloon-scene,
+  .popped-icon,
+  .balloon-confetti span {
+    animation: none;
+  }
+}
