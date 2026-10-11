@@ -8,6 +8,11 @@ const playlist = [
     artist: 'A song just for you, Harry 💛',
     src: '/music/birthday-song.mp3',
   },
+  {
+    title: 'Our Special Song 🦋',
+    artist: 'Another little memory for you',
+    src: '/music/song-three.mp3',
+  },
 ];
 
 function formatTime(seconds) {
@@ -29,8 +34,33 @@ export default function MusicPlayer() {
   const [volume, setVolume] = useState(0.7);
   const [isMuted, setIsMuted] = useState(false);
   const [error, setError] = useState('');
+  const [shouldAutoPlay, setShouldAutoPlay] = useState(false);
 
   const track = playlist[currentTrack];
+
+  // Load the selected track and resume playback when requested.
+  useEffect(() => {
+    const audio = audioRef.current;
+    if (!audio) return;
+
+    audio.volume = volume;
+    audio.muted = isMuted;
+    audio.load();
+
+    if (shouldAutoPlay) {
+      audio.play()
+        .then(() => {
+          setError('');
+        })
+        .catch(() => {
+          setIsPlaying(false);
+          setError('Unable to play this song. Check the MP3 file.');
+        })
+        .finally(() => {
+          setShouldAutoPlay(false);
+        });
+    }
+  }, [currentTrack, shouldAutoPlay]);
 
   useEffect(() => {
     const audio = audioRef.current;
@@ -51,40 +81,42 @@ export default function MusicPlayer() {
         await audio.play();
       } catch {
         setIsPlaying(false);
-        setError('Unable to play the song. Check your MP3 file.');
+        setError('Unable to play the song. Check the MP3 file.');
       }
     } else {
       audio.pause();
     }
   }
 
-  async function changeTrack(index) {
+  function changeTrack(index, autoplay = false) {
     if (index < 0 || index >= playlist.length) return;
 
     const audio = audioRef.current;
     if (!audio) return;
 
-    const shouldResume = !audio.paused;
+    const wasPlaying = !audio.paused;
 
     setError('');
     setCurrentTime(0);
     setDuration(0);
-    setCurrentTrack(index);
 
+    // Selecting the current song restarts it.
     if (index === currentTrack) {
       audio.currentTime = 0;
 
-      if (shouldResume) {
-        try {
-          await audio.play();
-        } catch {
-          setError('Unable to play the song.');
-        }
+      if (wasPlaying || autoplay) {
+        audio.play().catch(() => {
+          setIsPlaying(false);
+          setError('Unable to play the song. Check the MP3 file.');
+        });
       }
-    } else {
-      audio.pause();
-      setIsPlaying(false);
+
+      return;
     }
+
+    // Continue playing when switching tracks during playback.
+    setShouldAutoPlay(wasPlaying || autoplay);
+    setCurrentTrack(index);
   }
 
   function handleSeek(event) {
@@ -98,7 +130,7 @@ export default function MusicPlayer() {
 
   function handleEnded() {
     if (currentTrack < playlist.length - 1) {
-      changeTrack(currentTrack + 1);
+      changeTrack(currentTrack + 1, true);
     } else {
       setIsPlaying(false);
       setCurrentTime(duration);
@@ -128,7 +160,9 @@ export default function MusicPlayer() {
         onEnded={handleEnded}
         onError={() => {
           setIsPlaying(false);
-          setError('Music file not found. Add your MP3 to public/music/.');
+          setError(
+            `Music file not found: ${track.src}`
+          );
         }}
       />
 
@@ -188,9 +222,7 @@ export default function MusicPlayer() {
             <button
               type="button"
               className="music-skip-button"
-              onClick={() =>
-                changeTrack(Math.max(0, currentTrack - 1))
-              }
+              onClick={() => changeTrack(currentTrack - 1)}
               disabled={currentTrack === 0}
               aria-label="Previous song"
             >
@@ -209,11 +241,7 @@ export default function MusicPlayer() {
             <button
               type="button"
               className="music-skip-button"
-              onClick={() =>
-                changeTrack(
-                  Math.min(playlist.length - 1, currentTrack + 1)
-                )
-              }
+              onClick={() => changeTrack(currentTrack + 1)}
               disabled={currentTrack === playlist.length - 1}
               aria-label="Next song"
             >
