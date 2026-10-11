@@ -8,6 +8,7 @@ const playlist = [
     artist: 'A song just for you, Harry 💛',
     src: '/music/birthday-song.mp3',
   },
+
   {
     title: 'Our Special Song 🦋',
     artist: 'Another little memory for you',
