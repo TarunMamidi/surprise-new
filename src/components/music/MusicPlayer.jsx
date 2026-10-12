@@ -14,6 +14,7 @@ const playlist = [
     artist: 'Another little memory for you',
     src: '/music/song-three.mp3',
   },
+
 ];
 
 function formatTime(seconds) {
