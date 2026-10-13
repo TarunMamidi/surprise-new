@@ -8,17 +8,17 @@ const playlist = [
     artist: 'A song just for you, Harry 💛',
     src: '/music/birthday-song.mp3',
   },
-
   {
     title: 'Our Special Song 🦋',
     artist: 'Another little memory for you',
     src: '/music/song-three.mp3',
   },
-
 ];
 
 function formatTime(seconds) {
-  if (!Number.isFinite(seconds) || seconds < 0) return '0:00';
+  if (!Number.isFinite(seconds) || seconds < 0) {
+    return '0:00';
+  }
 
   const minutes = Math.floor(seconds / 60);
   const remainingSeconds = Math.floor(seconds % 60);
@@ -40,17 +40,17 @@ export default function MusicPlayer() {
 
   const track = playlist[currentTrack];
 
-  // Load the selected track and resume playback when requested.
+  // Load the selected song and resume playback when requested.
   useEffect(() => {
     const audio = audioRef.current;
+
     if (!audio) return;
 
-    audio.volume = volume;
-    audio.muted = isMuted;
     audio.load();
 
     if (shouldAutoPlay) {
-      audio.play()
+      audio
+        .play()
         .then(() => {
           setError('');
         })
@@ -64,16 +64,20 @@ export default function MusicPlayer() {
     }
   }, [currentTrack, shouldAutoPlay]);
 
+  // Keep volume and mute settings synchronised with the audio element.
   useEffect(() => {
     const audio = audioRef.current;
+
     if (!audio) return;
 
     audio.volume = volume;
     audio.muted = isMuted;
   }, [volume, isMuted]);
 
+  // Play or pause the current song.
   async function togglePlayback() {
     const audio = audioRef.current;
+
     if (!audio) return;
 
     setError('');
@@ -90,10 +94,12 @@ export default function MusicPlayer() {
     }
   }
 
+  // Select a track and optionally start playback.
   function changeTrack(index, autoplay = false) {
     if (index < 0 || index >= playlist.length) return;
 
     const audio = audioRef.current;
+
     if (!audio) return;
 
     const wasPlaying = !audio.paused;
@@ -116,20 +122,24 @@ export default function MusicPlayer() {
       return;
     }
 
-    // Continue playing when switching tracks during playback.
+    // Continue playback when switching tracks if needed.
     setShouldAutoPlay(wasPlaying || autoplay);
     setCurrentTrack(index);
   }
 
+  // Seek to a selected position in the song.
   function handleSeek(event) {
     const audio = audioRef.current;
+
     if (!audio || !Number.isFinite(audio.duration)) return;
 
     const time = Number(event.target.value);
+
     audio.currentTime = time;
     setCurrentTime(time);
   }
 
+  // Automatically advance when a song finishes.
   function handleEnded() {
     if (currentTrack < playlist.length - 1) {
       changeTrack(currentTrack + 1, true);
@@ -145,26 +155,26 @@ export default function MusicPlayer() {
         ref={audioRef}
         src={track.src}
         preload="metadata"
-        onTimeUpdate={(event) =>
-          setCurrentTime(event.currentTarget.currentTime)
-        }
-        onLoadedMetadata={(event) =>
-          setDuration(event.currentTarget.duration)
-        }
-        onDurationChange={(event) =>
-          setDuration(event.currentTarget.duration || 0)
-        }
+        onTimeUpdate={(event) => {
+          setCurrentTime(event.currentTarget.currentTime);
+        }}
+        onLoadedMetadata={(event) => {
+          setDuration(event.currentTarget.duration);
+        }}
+        onDurationChange={(event) => {
+          setDuration(event.currentTarget.duration || 0);
+        }}
         onPlay={() => {
           setIsPlaying(true);
           setError('');
         }}
-        onPause={() => setIsPlaying(false)}
+        onPause={() => {
+          setIsPlaying(false);
+        }}
         onEnded={handleEnded}
         onError={() => {
           setIsPlaying(false);
-          setError(
-            `Music file not found: ${track.src}`
-          );
+          setError(`Music file not found: ${track.src}`);
         }}
       />
 
@@ -173,17 +183,23 @@ export default function MusicPlayer() {
           <span className="music-kicker">
             A LITTLE MOMENT OF MAGIC
           </span>
+
           <h2>Our Little Playlist 💛</h2>
+
           <p>A melody to make you smile, Harry 🦋</p>
         </div>
 
-        <div className={`music-sun-icon ${isPlaying ? 'is-playing' : ''}`}>
+        <div
+          className={`music-sun-icon ${isPlaying ? 'is-playing' : ''}`}
+        >
           ☀️
         </div>
       </div>
 
       <div className="music-card-content">
-        <div className={`music-album-art ${isPlaying ? 'is-playing' : ''}`}>
+        <div
+          className={`music-album-art ${isPlaying ? 'is-playing' : ''}`}
+        >
           <span className="music-big-sun">☀️</span>
           <span className="music-butterfly">🦋</span>
           <span className="music-tiny-heart">♥</span>
@@ -194,6 +210,7 @@ export default function MusicPlayer() {
             <span className="music-now-playing">
               {isPlaying ? '♫ NOW PLAYING' : '♪ MADE FOR YOU'}
             </span>
+
             <h3>{track.title}</h3>
             <p>{track.artist}</p>
           </div>
