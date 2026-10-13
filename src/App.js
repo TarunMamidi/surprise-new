@@ -14,17 +14,23 @@ import BirthdaySurprise from './components/surprise/BirthdaySurprise';
 import MusicPlayer from './components/music/MusicPlayer';
 import BalloonSmash from './components/balloon/BalloonSmash';
 import SpinWheel from './components/spinwheel/SpinWheel';
+import PasswordPage from './components/password/Password';
 
 function App() {
-  const [isloading, setIsLoading] = useState(true);
+  const [passwordUnlocked, setPasswordUnlocked] = useState(false);
+  const [isloading, setIsLoading] = useState(false);
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(false);
+
+  const handlePasswordUnlock = useCallback(() => {
+    setPasswordUnlocked(true);
+    setIsLoading(true);
+  }, []);
 
   const finishLoading = useCallback(() => {
     setIsLoading(false);
   }, []);
 
-  // Keep fullscreen state in sync with the browser.
   useEffect(() => {
     const handleFullscreenChange = () => {
       setIsFullscreen(Boolean(document.fullscreenElement));
@@ -40,7 +46,6 @@ function App() {
     };
   }, []);
 
-  // Toggle browser fullscreen.
   const toggleFullscreen = async () => {
     try {
       if (!document.fullscreenElement) {
@@ -53,10 +58,14 @@ function App() {
     }
   };
 
-  // Toggle the website theme.
   const toggleDarkMode = () => {
     setIsDarkMode((previousMode) => !previousMode);
   };
+
+  // Screen 1: Password page
+  if (!passwordUnlocked) {
+    return <PasswordPage onUnlock={handlePasswordUnlock} />;
+  }
 
   return (
     <div
@@ -64,71 +73,71 @@ function App() {
         isDarkMode ? 'dark-mode' : 'light-mode'
       }`}
     >
-      {/* Floating decorations */}
-      <Butterflies />
-      <Sunflowers />
-
-      {/* Loading screen */}
+      {/* Screen 2: Existing loading animation */}
       {isloading && (
         <LoadingScreen onComplete={finishLoading} />
       )}
 
-      {/* Navigation */}
-      <nav className="navbar">
-        <a href="#home" className="brand">
-          little sunshine <span>☀️</span>
-        </a>
+      {/* Screen 3: Little Sunshine website */}
+      {!isloading && (
+        <>
+          <Butterflies />
+          <Sunflowers />
 
-        <div className="nav-links">
-          <a href="#food-adventures">FoodAdventures 🍕</a>
-          <a href="#memories">Memories 📸</a>
-          <a href="#food-games">Play our games 🎮</a>
-        </div>
+          <nav className="navbar">
+            <a href="#home" className="brand">
+              little sunshine <span>☀️</span>
+            </a>
 
-        <div className="navbar-actions">
-          <button
-            type="button"
-            className="theme-button"
-            onClick={toggleDarkMode}
-            aria-label={
-              isDarkMode
-                ? 'Switch to light mode'
-                : 'Switch to dark mode'
-            }
-            aria-pressed={isDarkMode}
-          >
-            {isDarkMode ? '☀️' : '🌙'}
-          </button>
+            <div className="nav-links">
+              <a href="#food-adventures">FoodAdventures 🍕</a>
+              <a href="#memories">Memories 📸</a>
+              <a href="#food-games">Play our games 🎮</a>
+            </div>
 
-          <button
-            type="button"
-            className="fullscreen-button"
-            onClick={toggleFullscreen}
-          >
-            {isFullscreen ? 'Exit Fullscreen' : 'Fullscreen ⛶'}
-          </button>
-        </div>
-      </nav>
+            <div className="navbar-actions">
+              <button
+                type="button"
+                className="theme-button"
+                onClick={toggleDarkMode}
+                aria-label={
+                  isDarkMode
+                    ? 'Switch to light mode'
+                    : 'Switch to dark mode'
+                }
+                aria-pressed={isDarkMode}
+              >
+                {isDarkMode ? '☀️' : '🌙'}
+              </button>
 
-      {/* Main website sections */}
-      <main>
-        <Hero />
-        <FoodAdventures />
-        <Memories />
-        <BirthdaySurprise />
-        <SpinWheel/>
-        <FoodGames />
-        <MusicPlayer />
-      </main>
+              <button
+                type="button"
+                className="fullscreen-button"
+                onClick={toggleFullscreen}
+              >
+                {isFullscreen ? 'Exit Fullscreen' : 'Fullscreen ⛶'}
+              </button>
+            </div>
+          </nav>
 
-      {/* Footer */}
-      <footer className="footer">
-        <p>Made with 💛, memories, and a little bit of code.</p>
-        <p>For someone who makes life brighter. ♡</p>
-      </footer>
+          <main>
+            <Hero />
+            <FoodAdventures />
+            <Memories />
+            <BirthdaySurprise />
+            <SpinWheel />
+            <FoodGames />
+            <MusicPlayer />
+          </main>
 
-      {/* Balloon surprise — render only once */}
-      <BalloonSmash />
+          <footer className="footer">
+            <p>Made with 💛, memories, and a little bit of code.</p>
+            <p>For someone who makes life brighter. ♡</p>
+          </footer>
+
+          <BalloonSmash />
+        </>
+      )}
     </div>
   );
 }
