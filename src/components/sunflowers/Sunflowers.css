@@ -16,7 +16,8 @@
   animation: sunflower-drift 7s ease-in-out infinite;
   will-change: transform;
   background-color: transparent;
-  border: none;
+  border:none;
+
 }
 
 .sunflower-one {
