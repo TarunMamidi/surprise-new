@@ -16,7 +16,7 @@ import BalloonSmash from './components/balloon/BalloonSmash';
 import SpinWheel from './components/spinwheel/SpinWheel';
 import PasswordPage from './components/password/Password';
 import CalmCorner from './components/calm/CalmCorner';
-import SunshineWorld from './components/sunshine-world/SunshineWorld';
+
 
 function App() {
   const [passwordUnlocked, setPasswordUnlocked] = useState(false);
@@ -130,7 +130,6 @@ function App() {
             <SpinWheel />
             <FoodGames />
             <CalmCorner/>
-            <SunshineWorld/>
             <MusicPlayer />
           </main>
 
