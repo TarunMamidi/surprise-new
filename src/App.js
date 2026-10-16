@@ -15,7 +15,7 @@ import MusicPlayer from './components/music/MusicPlayer';
 import BalloonSmash from './components/balloon/BalloonSmash';
 import SpinWheel from './components/spinwheel/SpinWheel';
 import PasswordPage from './components/password/Password';
-import CalmCorner from './components/calm/CalmCorner';
+
 
 
 function App() {
@@ -129,7 +129,6 @@ function App() {
             <BirthdaySurprise />
             <SpinWheel />
             <FoodGames />
-            <CalmCorner/>
             <MusicPlayer />
           </main>
 
