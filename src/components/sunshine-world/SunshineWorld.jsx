@@ -325,22 +325,8 @@ function Butterfly({ position, color = "#edb5ce" }) {
   );
 }
 
-function Label({ title, subtitle, onClick }) {
-  return (
-    <Html position={[0, 2.7, 0]} center distanceFactor={11}>
-      <button
-        className="sunshine-island-label"
-        onClick={(e) => {
-          e.stopPropagation();
-          onClick();
-        }}
-      >
-        <span className="sunshine-label-title">{title}</span>
-        <span className="sunshine-label-subtitle">{subtitle}</span>
-      </button>
-    </Html>
-  );
-}
+
+
 
 /* FOOD ISLAND: dumplings, pho, takeaway coffee and café seating */
 
@@ -1257,7 +1243,7 @@ export default function SunshineWorld() {
       )}
 
       <div className="sunshine-world-footer">
-        <span>✦</span> Made with love, just for Harry <span>✦</span>
+        <span>✦</span> Made with love, just for Harry <span> ✦</span>
       </div>
     </main>
   );
